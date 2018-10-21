@@ -42,7 +42,7 @@ var unifiedServer = function (req, res){
 
   //Get the path
   var path = parsedUrl.pathname;
-  var trimmedPath = path.replace(/^\/+|\/+$/g,'');
+  var trimmedPath = path.replace(/^\/+|\/+$/g,'').toLowerCase();
   //Get the query string object
   var queryStringObject = parsedUrl.query;
   //Get the HTTP method
@@ -102,6 +102,9 @@ var handlers = {};
 handlers.ping = function(data, callback){
   callback(200);
 };
+handlers.helloWorld = function(data, callback){
+  callback(200, {'message':'Welcome and Hello World!'});
+};
 
 //Not Found handler
 handlers.notFound = function(data, callback){
@@ -110,5 +113,6 @@ handlers.notFound = function(data, callback){
 
 //define the router
 var router = {
-  'ping': handlers.ping
+  'ping': handlers.ping,
+  'helloworld': handlers.helloWorld
 };
