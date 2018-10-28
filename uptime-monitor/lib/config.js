@@ -10,21 +10,24 @@ var environments = {};
 environments.development = {
   'httpPort': 3000,
   'httpsPort': 3001,
-  'envName': 'development'
+  'envName': 'development',
+  'hashingSecret': 'thisIsSecret'
 };
 
 //  Staging environment
 environments.staging = {
   'httpPort': 4000,
   'httpsPort': 4001,
-  'envName': 'staging'
+  'envName': 'staging',
+  'hashingSecret': 'thisIsSecret'
 };
 
 //Production environment
 environments.production = {
   'httpPort': 5000,
   'httpsPort': 5001,
-  'envName': 'production'
+  'envName': 'production',
+  'hashingSecret': 'thisIsSecret'
 };
 
 //Determine which to export when command-line arg is passed

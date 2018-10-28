@@ -8,7 +8,11 @@ var https = require('https');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder; //use to convert bytes to string
 var fs = require('fs');
-var config = require('./config');
+var config = require('./lib/config');
+var _data = require('./lib/data');
+var handlers = require('./lib/handlers');
+var helpers = require('./lib/helpers');
+
 
 //  Instantiating HTTP Server
 var httpServer = http.createServer(function(req, res){
@@ -58,19 +62,20 @@ var unifiedServer = function (req, res){
   });
   req.on('end', function(){
     //buffer += decoder.end();
-    buffer += 'zzz';
+    //buffer += '';
 
     //Choose the appropiate handler corresponding to the request
     var choosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
-
     //Construct the data object to send to the handler
     var data = {
       'trimmedPath': trimmedPath,
       'queryStringObject': queryStringObject,
       'method': method,
       'headers': headers,
-      'payload': buffer
+      'payload': helpers.parseJSONToObject(buffer)
     };
+
+    //console.log(data);
 
     //Route the request to the choosenHandler
     choosenHandler(data, function(statusCode, payload){
@@ -95,24 +100,12 @@ var unifiedServer = function (req, res){
   });
 };
 
-//define the handlers
-var handlers = {};
 
-//Ping handler
-handlers.ping = function(data, callback){
-  callback(200);
-};
-handlers.helloWorld = function(data, callback){
-  callback(200, {'message':'Welcome and Hello World!'});
-};
-
-//Not Found handler
-handlers.notFound = function(data, callback){
-  callback(404);
-};
 
 //define the router
 var router = {
   'ping': handlers.ping,
-  'helloworld': handlers.helloWorld
+  'helloworld': handlers.helloWorld,
+  'users': handlers.users,
+  'tokens': handlers.tokens
 };
