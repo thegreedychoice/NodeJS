@@ -46,7 +46,7 @@ lib.read = function(dir, file, callback){
   fs.readFile(lib.baseDir+dir+'/'+file+'.json','utf8', function(err, data){
     if(!err && data){
       var parsedData = helpers.parseJSONToObject(data);
-      callback(false,parsedData);
+      callback(false, parsedData);
     } else {
         callback(err, data);
     }
@@ -60,7 +60,6 @@ lib.update = function(dir, file, data, callback){
     if(!err & fileDescriptor){
       //Convert data to string
       var stringData = JSON.stringify(data);
-
       //Truncate the file
       fs.truncate(fileDescriptor, function(err){
         if(!err){
